@@ -1,0 +1,1 @@
+package _0global_var

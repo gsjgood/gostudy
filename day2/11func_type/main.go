@@ -1,0 +1,1 @@
+package _1func_type
