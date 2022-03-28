@@ -17,7 +17,7 @@ import (
 func main() {
 
 	key := []byte("19781160")
-	plaintext := []byte("14505000"    )
+	plaintext := []byte("14505000")
 	iv := make([]byte, 8)
 
 	// using CAST-256 in ECB mode
