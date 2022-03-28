@@ -2,24 +2,28 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"sync"
 	"time"
 )
 
-func hello(i int)  {
-	fmt.Println("你好啊", i)
+//waitGroup
+
+func f1(i int) {
+	wg.Done()
+	time.Sleep(time.Second * time.Duration(rand.Intn(3)))
+	fmt.Println(i)
 }
+
+var wg sync.WaitGroup
 
 func main() {
 
-	for i := 0; i<10000;i++ {
-
-		go hello(i)
-		//go func(i int) {
-		//	fmt.Println(i)
-		//}(i) //匿名函数
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go f1(i)
 	}
-	fmt.Println("main")
 
-	time.Sleep(time.Second)
-	//main 函数结束了由mian函数启动的gorouine也结束了
+	wg.Wait() //等待wg的计数器减为0
+	fmt.Println("'-----'")
 }

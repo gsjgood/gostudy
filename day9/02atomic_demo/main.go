@@ -2,60 +2,31 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"sync"
+	"sync/atomic"
 )
 
-//go内置的map不支持并发安全
-
-
-var m = make(map[string]int)
-
-func get( key string) int {
-	return m[key]
-}
-
-func set(key string, value int)  {
-	m[key] = value
-}
-
+//原子操作
+var x int64
 var wg sync.WaitGroup
-//func main() {
-//
-//	for i := 0; i < 20; i++ {
-//		wg.Add(1)
-//		go func(n int) {
-//
-//			key := strconv.Itoa(n)
-//			set(key,n)
-//			fmt.Printf("k:%v v:%v\n", key, get(key))
-//			wg.Done()
-//		}(i)
-//
-//		wg.Wait()
-//	}
-//}
 
-var m2 = sync.Map{}
+func add() {
+
+	atomic.AddInt64(&x, 1)
+	wg.Done()
+}
 
 func main() {
 
-	for i := 0; i < 21; i++ {
+	//wg.Add(1)
+	//
+	//for i := 0; i < 10000; i++ {
+	//	go add()
+	//}
+	//
+	//wg.Wait()
 
-		wg.Add(1)
-
-		go func(n int) {
-			key := strconv.Itoa(n)
-
-			m2.Store(key, n) //必须使用sync.map内置的strore方法设置键值对
-			value, ok := m2.Load(key)
-			if !ok {
-				return
-			}
-			fmt.Printf("k:%v v:%v\n", key, value)
-			wg.Done()
-		}(i)
-	}
-
-	wg.Wait()
+	//比较并交换
+	ok := atomic.CompareAndSwapInt64(&x, 0, 200)
+	fmt.Println(ok, x)
 }

@@ -47,6 +47,7 @@ func main() {
 	c1 := cat{"tom", 4}
 	c2 := &cat{"黑猫警长", 4} //cat 类型的指针
 
+	fmt.Println()
 	anm = &c1
 	fmt.Println(anm) //{tom 4}
 	anm = c2

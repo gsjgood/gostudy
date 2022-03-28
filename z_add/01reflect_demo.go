@@ -1,1 +1,1 @@
-package z_add
+package main
